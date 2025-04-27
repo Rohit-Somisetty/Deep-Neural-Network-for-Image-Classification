@@ -22,10 +22,9 @@ Implemented using TensorFlow/Keras, with data augmentation techniques for improv
 
 | File / Folder | Purpose |
 |---------------|---------|
-| `Assignment 6.ipynb` | Jupyter Notebook containing the full training pipeline |
+| `Image_Classification.ipynb` | Jupyter Notebook containing the full training pipeline |
 | `cats_and_dogs_small_1.h5` | Saved trained model (basic CNN without heavy augmentation) |
 | `cats_and_dogs_small_2.h5` | Saved trained model (CNN with data augmentation) |
-| `train/`, `validation/`, `test/` | (Optional) Organized dataset folders for training/validation/testing |
 | `README.md` | Project documentation |
 
 ---

@@ -1,15 +1,18 @@
 # 🐱 Cats vs. Dogs Image Classifier 🐶
 
-This project implements a Convolutional Neural Network (CNN) using PyTorch to classify images as containing either a cat or a dog. It uses pre-split training, validation, and test datasets to train and evaluate the model.
+Welcome! This project tackles the classic computer vision challenge of distinguishing between images of cats and dogs using a custom-built Convolutional Neural Network (CNN) implemented in PyTorch.
+
+It provides an end-to-end pipeline, handling dataset organization, image augmentation, model training, validation, testing, and prediction on new images **automatically**.
 
 ## ✨ Features
 
-* **Custom CNN Architecture:** Built from scratch using PyTorch (`torch.nn.Module`) with 4 convolutional layers, MaxPooling, ReLU activations, and Dropout for regularization.
-* **PyTorch Ecosystem:** Leverages `Dataset` and `DataLoader` for efficient data loading and batching from pre-structured folders.
-* **Image Augmentation:** Applies random transformations (rotation, horizontal flip, color jitter) to the training data to improve model generalization.
-* **Training & Validation:** Includes standard training and validation loops to monitor performance during training using separate datasets.
-* **Results Visualization:** Plots and saves training/validation accuracy and loss curves using Matplotlib.
-* **Prediction Script:** Provides a separate script (`predict.py`) to load the trained model and classify a single image.
+* **Automated Dataset Organization:** Takes the raw Kaggle "Dogs vs. Cats" dataset and automatically splits it into `train`, `validation`, and `test` sets with `cats`/`dogs` subdirectories.
+* **Custom CNN Architecture:** Built from scratch using PyTorch (`torch.nn.Module`) featuring 4 convolutional layers, MaxPooling, ReLU activations, and Dropout for robust learning.
+* **PyTorch Ecosystem:** Efficiently handles data loading and batching using `Dataset` and `DataLoader`.
+* **Image Augmentation:** Enhances model generalization by applying random transformations (rotation, horizontal flip, color jitter) during training.
+* **Standard Training Pipeline:** Includes training, validation, and testing loops with clear performance reporting (accuracy and loss).
+* **Results Visualization:** Generates and saves plots of training/validation accuracy and loss curves via Matplotlib.
+* **Prediction Ready:** Comes with a `predict.py` script to easily classify single images using the trained model.
 
 ## 🛠️ Tech Stack
 
@@ -18,24 +21,32 @@ This project implements a Convolutional Neural Network (CNN) using PyTorch to cl
 * NumPy
 * Matplotlib
 * Pillow (PIL)
+* Kaggle API (for downloading dataset)
 
-*(See `requirements.txt` for specific versions)*
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)](https://pytorch.org/)
+[![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+[![Matplotlib](https://img.shields.io/badge/matplotlib-%23ffffff.svg?style=for-the-badge&logo=matplotlib&logoColor=black)](https://matplotlib.org/)
+
+*(See `requirements.txt` for specific versions. You can generate it using `pip freeze > requirements.txt` in your environment.)*
 
 ## 🧠 Model Architecture
 
-The CNN consists of the following main components:
+The CNN processes 150x150 RGB images through the following layers:
 
-1.  **Input:** 150x150 RGB images (3 channels)
-2.  **Convolutional Blocks:** Four blocks of `Conv2d` -> `ReLU` -> `MaxPool2d`. The number of filters increases (32 -> 64 -> 128 -> 128).
-3.  **Flattening:** Flattens the output of the last pooling layer.
-4.  **Dropout:** Applies dropout (p=0.5) for regularization.
-5.  **Fully Connected Layers:** Two `Linear` layers (first with ReLU, second outputting a single value).
-6.  **Output Activation:** `Sigmoid` function to produce a probability score between 0 (cat) and 1 (dog).
+1.  **Conv Block 1:** `Conv2d(3, 32)` -> `ReLU` -> `MaxPool2d`
+2.  **Conv Block 2:** `Conv2d(32, 64)` -> `ReLU` -> `MaxPool2d`
+3.  **Conv Block 3:** `Conv2d(64, 128)` -> `ReLU` -> `MaxPool2d`
+4.  **Conv Block 4:** `Conv2d(128, 128)` -> `ReLU` -> `MaxPool2d`
+5.  **Flatten**
+6.  **Dropout (p=0.5)**
+7.  **Fully Connected 1:** `Linear(6272, 512)` -> `ReLU`
+8.  **Dropout (p=0.5)**
+9.  **Fully Connected 2 (Output):** `Linear(512, 1)` -> `Sigmoid` (outputs probability of being a dog)
 
+## 📊 Dataset - Kaggle Dogs vs. Cats
 
-## 📊 Dataset
-
-This project uses the **Dogs vs. Cats** dataset from the Kaggle competition.
+This project uses the **Dogs vs. Cats** dataset from the official Kaggle competition.
 
 1.  **Download:** You'll need the Kaggle API installed (`pip install kaggle`). Download the data using the command:
     ```bash
@@ -43,19 +54,5 @@ This project uses the **Dogs vs. Cats** dataset from the Kaggle competition.
     ```
     This will download `train.zip`, `test1.zip`, and `sampleSubmission.csv`.
 
-2.  **Extract:** Unzip `train.zip`. This will create a `train/` folder containing ~25,000 `.jpg` images named like `cat.####.jpg` and `dog.####.jpg`.
-
-3.  **Manual Splitting Required:** The provided Python scripts expect the data to be **pre-split** into `train`, `validation`, and `test` directories, each containing `cats` and `dogs` subdirectories. **You must create this structure manually** from the images extracted from `train.zip`.
-
-    * Create the following directories in your project root:
-        * `train/cats/`
-        * `train/dogs/`
-        * `validation/cats/`
-        * `validation/dogs/`
-        * `test/cats/`
-        * `test/dogs/`
-    * Decide on your split ratio (e.g., 80% train, 10% validation, 10% test, or similar to the original script's 70/15/15).
-    * Go through the unzipped `train/` folder from Kaggle.
-    * Copy the appropriate number of `cat.####.jpg` images into `train/cats/`, `validation/cats/`, and `test/cats/`.
-    * Copy the appropriate number of `dog.####.jpg` images into `train/dogs/`, `validation/dogs/`, and `test/dogs/`.
+2.  **Extract:** Unzip `train.zip` directly into your project's root directory. This should create a `train/` folder containing all ~25,000 training images (`cat.####.jpg` and `dog.####.jpg`). **Do not manually create subfolders or split the data.**
 
